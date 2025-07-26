@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+{% block title %} articolio.com | Blog {% endblock title %}
+
+{% block blogactive %} active {% endblock blogactive %}
+
+{% load humanize %}
+{% load extras %}
+
+{% block body %}
+<div class="container my-3">
+  <article class="blog-post">
+    {% if post.img %}
+<div class="col-auto d-none d-lg-block">
+  <img src="{{post.img.url}}" aria-label="Placeholder: Thumbnail" class="bd-placeholder-img float-end" height="250" preserveAspectRatio="xMidYMid slice" role="img" width="200">
+</div>
+{% endif %}
+    <h2 class="display-5 link-body-emphasis mb-1">{{post.title}}</h2>
+    <p class="blog-post-meta">{{post.timestamp}} by <a href="#">{{post.author}}</a></p>
+
+    <p>{{post.content|safe}}</p>
+    <hr>
+  </article>
+</div>
+<div class="container">
+  <h5>{{comments.count}} Comments </h5>
+  {% if user.is_authenticated %}
+  <form action='/blog/postComment/' method="post">{% csrf_token %}
+    <div class="form-group my-2">
+      <input type="text" name="comment" class="form-control" id="comment">
+    </div>
+    <input type="hidden" name="postSno" value="{{post.sno}}">
+    <input type="hidden" name="parentSno" value="">
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+  {% else %}
+  <div>
+    <p>Please login to comment</p>
+  </div>
+  {% endif %}
+  {% for comment in comments %}
+  <div class="container border row my-3">
+    <div class="col-md-1">
+      <img class="rounded mx-auto d-block w-100 border border-dark m-1" src="/static/img/defaultUser.jpg" alt="user">
+    </div>
+    <div class="col-md-11 my-2">
+      <div class="col-md-12">@<b>{{comment.user}}</b></div>
+      <div class="col-md-12 text-body-secondary">{{comment.timestamp | naturalday}}</div>
+      <div class="col-md-12 text border font">{{comment.comment}}</div>
+      <div class="replies my-2">
+        <div class="reply gap-3">
+          {% if replyDict|get_val:comment.sno|length != 0 %}
+          <a class="btn-primary p-2" type="button" data-bs-toggle="collapse" data-bs-target="#replies{{comment.sno}}" aria-expanded="false" aria-controls="collapseExample">Show {{replyDict|get_val:comment.sno|length}} Replies</a>
+          {% endif %}
+          {% if user.is_authenticated %}
+          <a class="btn-primary p-2" type="button" data-bs-toggle="collapse" data-bs-target="#replyBox{{comment.sno}}" aria-expanded="false" aria-controls="collapseExample">Reply</a>
+          {% endif %}
+        </div>
+        <div class="collapse my-1" id="replyBox{{comment.sno}}">
+          <div class="card card-body">
+            <form action='/blog/postComment/' method="post">{% csrf_token %}
+              <div class="form-group my-2">
+                <input type="text" name="comment" class="form-control" id="comment">
+                <input type="hidden" name="parentSno" value="{{comment.sno}}">
+              </div>
+              <input type="hidden" name="postSno" value="{{post.sno}}">
+              <button type="submit" class="btn btn-primary">Reply</button>
+            </form>
+          </div>
+        </div>
+        <div class="collapse my-1" id="replies{{comment.sno}}">
+          <div class="card card-body">        
+            {% for reply in replyDict|get_val:comment.sno %}
+            <div class="row border">
+              <div class="col-md-1">
+                <img class="rounded-circle mx-auto d-block w-100 border border-dark m-1" src="/static/img/defaultUser.jpg" alt="user">
+              </div>
+              <div class="col-md-11">
+                <div class="col-md-12">@<b>{{reply.user}}</b></div>
+                <div class="col-md-12 text-body-secondary">{{reply.timestamp | naturalday}}</div>
+                <p>
+                  {{reply.comment}}
+                </p>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock body %}

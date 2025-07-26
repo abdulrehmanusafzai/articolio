@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %} articolio.com | Home {% endblock title %}
+
+{% block homeactive %} active {% endblock homeactive %}
+
+{% block body %}
+<div class="container">
+  <div class="jumbotron">
+    {% if user.is_authenticated %}
+    <h1 class="display-4">Welcome {{user.username}}</h1>
+    {% else %}
+    <h1 class="display-4">Welcome to Articolio</h1>
+    {% endif %}
+    <p>This is a personal cloud space that features articles and showcases the skills of the developer behind it. You'll find content on a variety of topics from different areas of life. Just click the button below and dive into a sea of articles.</p>    <p class="lead">
+    <a class="btn btn-primary btn-lg" href="/blog" role="button">Go to blogs</a>
+    </p>
+  </div>
+</div>
+ {% endblock body %}
