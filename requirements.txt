@@ -2,3 +2,4 @@ django == 5.2.4
 gunicorn
 psycopg2-binary
 whitenoise
+Pillow
