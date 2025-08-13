@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-ef=rpyvu_tn72q7d-d-pp*8%6=p5$tym&qdrx@^2w^b7_=a7+o
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['articolio.onrender.com']
+ALLOWED_HOSTS = ['articolio.onrender.com', '127.0.0.1']
 
 
 # Application definition
@@ -79,8 +79,12 @@ WSGI_APPLICATION = 'iCoder.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'postgresql_uhfh',
+        'USER': 'abdulrehman',
+        'PASSWORD': 'WtsBBf9uGbNs2AFHnyw2jrUdouz7hHkb',
+        'HOST': 'dpg-d2e73vruibrs738pbh80-a.singapore-postgres.render.com',
+        'PORT': '5432'
     }
 }
 
