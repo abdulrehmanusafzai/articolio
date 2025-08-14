@@ -80,12 +80,8 @@ WSGI_APPLICATION = 'iCoder.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgresql_uhfh',
-        'USER': 'abdulrehman',
-        'PASSWORD': 'WtsBBf9uGbNs2AFHnyw2jrUdouz7hHkb',
-        'HOST': 'dpg-d2e73vruibrs738pbh80-a',
-        'PORT': '5432'
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
